@@ -1,0 +1,35 @@
+from typing import List
+import collections
+
+class Solution:
+    def expressiveWords(self, s: str, words: List[str]) -> int:
+        def count_groups(word):
+            groups = []
+            i = 0
+            while i < len(word):
+                j = i
+                while j < len(word) and word[j] == word[i]:
+                    j += 1
+                groups.append((word[i], j - i))
+                i = j
+            return groups
+
+        s_groups = count_groups(s)
+        print(s_groups)
+        res = 0
+
+        for word in words:
+            word_groups = count_groups(word)
+            if len(word_groups) != len(s_groups):
+                continue
+
+            valid = True
+            for (s_char, s_count), (w_char, w_count) in zip(s_groups, word_groups):
+                if s_char != w_char or (s_count < 3 and s_count != w_count) or (s_count >= 3 and w_count > s_count):
+                    valid = False
+                    break
+
+            if valid:
+                res += 1
+
+        return res
