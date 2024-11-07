@@ -1,0 +1,12 @@
+class Solution:
+    def partitionString(self, s: str) -> int:
+        seen = set()
+        output = 0
+        for _, c in enumerate(s):
+            if c in seen:
+                output += 1 
+                seen = set(c)
+                continue
+            seen.add(c)
+
+        return output + 1

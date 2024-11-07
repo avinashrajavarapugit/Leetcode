@@ -1,0 +1,27 @@
+class Solution:
+    def countPairs(self, n: int, edges: List[List[int]]) -> int:
+        graph = collections.defaultdict(list)
+        c = 0
+        for u,v in edges:
+            graph[v].append(u)
+            graph[u].append(v)
+        visited = [False] * n
+        def dfs(start):
+            s = []
+            s.append(start)
+            visited[start] = True
+            count = 0
+            while len(s) > 0:
+                curr = s.pop()
+                count += 1
+                for adj in graph[curr]:
+                    if not visited[adj]:
+                        s.append(adj)
+                        visited[adj] = True
+            return count
+        total  = 0
+        for i in range(n):
+            if not visited[i]:
+                curr = dfs(i)
+                total += curr * (n - curr)
+        return total//2

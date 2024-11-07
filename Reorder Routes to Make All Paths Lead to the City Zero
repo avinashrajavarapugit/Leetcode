@@ -1,0 +1,21 @@
+
+class Solution:
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+        
+        graph = defaultdict(list)
+        for u, v in connections:
+            graph[u].append((v, 1))
+            graph[v].append((u, 0)) 
+        visited = {0}
+        self.res = 0
+        
+        def dfs(u):
+            visited.add(u)
+            for v,c in graph[u]:
+                if v not in visited:
+                    self.res+=c
+                    dfs(v)
+             
+        dfs(0)
+        
+        return self.res

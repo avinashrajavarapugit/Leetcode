@@ -1,0 +1,32 @@
+class Solution:
+    def numEnclaves(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        def bfs(x,y):
+            q = deque([(x,y)])
+            grid[x][y]=0
+            el = 1
+            while q:
+                i,j = q.pop()
+                for di,dj in  [(1,0),(-1,0),(0,-1),(0,1)]:
+                    ni,nj = i + di , j +dj 
+                    if 0<=ni<m and 0<=nj<n and grid[ni][nj]==1 :
+                        grid[ni][nj] = 0
+                        el+=1
+                        q.appendleft((ni,nj))
+            return el
+            
+        for i in [0,m-1]:
+            for j in range(n):
+                if grid[i][j]==1:
+                    bfs(i,j)
+        for j in [0,n-1]:
+            for i in range(m):
+                if grid[i][j]==1:
+                    bfs(i,j)
+        res = 0 
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==1:
+                    res+=1
+        return res

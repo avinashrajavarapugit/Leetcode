@@ -1,0 +1,12 @@
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort()
+        n = len(satisfaction)
+        t = 0
+        b = 0
+        l = 0
+        for i in range(n-1,-1,-1):
+            l += satisfaction[i]
+            t += l
+            b = max(b,t)
+        return b

@@ -1,0 +1,27 @@
+class Solution:
+    def makeConnected(self, n: int, connections: List[List[int]]) -> int:
+
+        graph = collections.defaultdict(list)
+        l = len(connections)
+        if l<n-1:
+            return -1
+        for u,v in connections:
+            graph[u].append(v)
+            graph[v].append(u)
+        visited = [False] * n
+        def bfs(start):
+
+            queue = collections.deque()
+            queue.append(start)
+            while len(queue) > 0:
+                curr = queue.popleft()
+                for adj in graph[curr]:
+                    if not visited[adj]:
+                        visited[adj] = True
+                        queue.append(adj)
+        c = 0
+        for i in range(n):
+            if not visited[i]:
+                c += 1
+                bfs(i)
+        return c-1

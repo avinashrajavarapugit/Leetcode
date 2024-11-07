@@ -1,0 +1,17 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def longestZigZag(self, root: Optional[TreeNode]) -> int:
+        def po(u):
+            if not u:
+                return (0, 0, 0)
+
+            lb, _, lr = po(u.left)
+            rb, rl, _ = po(u.right)
+            return (max([lb, rb, 1 + lr, 1 + rl]), 1 + lr, 1 + rl)
+        
+        return po(root)[0] - 1

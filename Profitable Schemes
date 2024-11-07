@@ -1,0 +1,10 @@
+class Solution:
+    def profitableSchemes(self, n: int, minProfit: int, group: List[int], profit: List[int]) -> int:
+        MOD = 10**9+7
+        @cache
+        def dp(i, n, p):
+            if i == len(group) or n < 0:
+                return int(n >= 0 and p == 0)
+            return dp(i + 1, n, p) \
+            + dp(i + 1, n - group[i], max(p - profit[i], 0))
+        return dp(0, n, minProfit) % MOD

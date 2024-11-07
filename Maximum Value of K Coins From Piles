@@ -1,0 +1,26 @@
+class Solution:
+    def maxValueOfCoins(self, piles: List[List[int]], k: int) -> int:
+        N =len(piles)
+
+        has_cache = [[False] * (k+1) for _ in range(N)]
+        cache = [[None] * (k + 1) for _ in range(N)]
+        def calculate(index, kleft):
+            if index==N:
+                return 0
+            if kleft == 0:
+                return 0
+            if has_cache[index][kleft]:
+                return cache[index][kleft]
+            
+            best = 0
+            L = min(len(piles[index])+1,kleft+1)
+            scores = 0
+            for x in range(L):
+                best = max(best, calculate(index + 1, kleft -x) + scores)
+                if x < len(piles[index]):
+                    scores += piles[index][x]
+            has_cache[index][kleft] = True
+            cache[index][kleft] = best
+
+            return best
+        return calculate(0,k)

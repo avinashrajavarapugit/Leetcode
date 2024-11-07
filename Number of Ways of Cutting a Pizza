@@ -1,0 +1,24 @@
+class Solution:
+    def ways(self, pizza: List[str], k: int) -> int:
+        R, C, m = len(pizza), len(pizza[0]), 10**9 + 7
+        peice = [[0]*(C+1) for _ in range(R+1)]
+        for r in range(R-1, -1, -1):
+            for c in range(C-1, -1, -1):
+                peice[r][c] = peice[r][c+1] + peice[r+1][c] - peice[r+1][c+1] + int(pizza[r][c] == 'A')
+        
+        @cache
+        def dp(k, r, c):
+            if peice[r][c] == 0: return 0
+            if k == 0: return 1
+            ans = 0
+            for nr in range(r+1, R):
+                if peice[r][c] - peice[nr][c] > 0:
+                    ans += dp(k-1, nr, c)
+                    ans %= m
+            
+            for nc in range(c+1, C):
+                if peice[r][c] - peice[r][nc] > 0:
+                    ans += dp(k-1, r, nc)
+                    ans %= m
+            return ans 
+        return dp(k-1, 0, 0) % m

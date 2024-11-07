@@ -1,0 +1,13 @@
+class Solution:
+        def longestPalindromeSubseq(self, s: str) -> int:
+            s1 = s
+            s2 = s[::-1]
+            n = len(s)
+            @cache
+            def getlongest(i,j):
+                if i>=n or j>=n:
+                    return 0
+                if s1[i] == s2[j]:
+                    return 1 + getlongest(i+1,j+1)
+                return max(getlongest(i+1,j),getlongest(i,j+1))
+            return getlongest(0,0)

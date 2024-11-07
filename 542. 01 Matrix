@@ -1,0 +1,23 @@
+from collections import deque
+
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        m = len(mat)
+        n = len(mat[0])
+        q = deque()
+        for i in range(m):
+            for j in range(n):
+                if mat[i][j] == 0:
+                    q.append((i, j))
+                else:
+                    mat[i][j] = float('inf')
+                    
+        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        while q:
+            x, y = q.popleft()
+            for dx, dy in dirs:
+                i, j = x + dx, y + dy
+                if 0 <= i < m and 0 <= j < n and mat[i][j] > mat[x][y] + 1:
+                    mat[i][j] = mat[x][y] + 1
+                    q.append((i, j))
+        return mat

@@ -1,0 +1,10 @@
+class Solution:
+    def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
+        potions.sort()
+        N=len(potions)
+        r = []
+        for i in spells:
+            target=(success-1)//i
+            index=bisect.bisect_right(potions,target)
+            r.append(N-index)
+        return r

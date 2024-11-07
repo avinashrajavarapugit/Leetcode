@@ -1,0 +1,13 @@
+class Solution:
+    def minimizeArrayValue(self, nums: List[int]) -> int:
+
+        high = nums[0]
+        s = 0
+
+        for c,h in enumerate(nums):
+            s += h
+
+            if s > (c + 1) * high:
+                high = ceil(s / (c +1))
+        
+        return high

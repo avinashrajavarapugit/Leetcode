@@ -1,0 +1,53 @@
+class Solution:
+    def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+        n = len(colors)
+        graph = collections.defaultdict(list)
+        for u,v in edges:
+            graph[u].append(v)
+        
+        Black = 0
+        Gray = 1
+        White = 2
+        visited = [White]*n
+
+        def dfs(start):
+            visited[start] = Gray
+            for adj in graph[start]:
+                if visited[adj] == Gray:
+                    return True
+                if visited[adj] == White and dfs(adj):
+                    return True
+            visited[start] = Black
+            return False
+
+        
+        for i in range(n):
+            if visited[i] == White:
+                if dfs(i):
+                    return -1
+        
+        def calculate(color):
+            cache = [None] * n
+            has_cache = [False] * n
+            def get_longest(index):
+                if has_cache[index]:
+                    return cache[index]
+                curr = 0
+                if colors[index] == color:
+                    curr = 1
+                best = 0
+                for v in graph[index]:
+                    best = max(best, get_longest(v))
+                best += curr
+                has_cache[index] = True
+                cache[index] = best
+                return best
+                
+            best = 0
+            for i in range(n):
+                best = max(best, get_longest(i))
+            return best
+        best = 0
+        for c in set(colors):
+            best = max(best, calculate(c))
+        return best

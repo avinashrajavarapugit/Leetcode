@@ -1,0 +1,23 @@
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        R, C = len(grid), len(grid[0])
+        in_bounds = lambda r, c: 0 <= r < R and 0 <= c < C
+        res = 0
+        def dfs(row, col):
+            stack = [(row, col)]
+            grid[row][col] = 2
+            is_closed = True
+            while stack:
+                r, c = stack.pop()
+                for nr, nc in [(r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)]:
+                    if not in_bounds(nr, nc): 
+                        is_closed = False
+                        continue
+                    if grid[nr][nc] != 0: continue
+                    grid[nr][nc] = 2
+                    stack.append((nr, nc))
+            return is_closed
+        for r, c in product(range(R), range(C)):
+            if grid[r][c] != 0: continue
+            res += dfs(r, c)
+        return res

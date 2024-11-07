@@ -1,0 +1,21 @@
+class Solution:
+    def minimumCost(self, start: List[int], target: List[int], specialRoads: List[List[int]]) -> int:
+        N =len(specialRoads)+2
+        INF = 10**20
+        dist = [INF]*N
+        best = abs(start[0] - target[0]) + abs(start[1] - target[1])
+        h = []
+        heapq.heappush(h,(0,start[0], start[1], -1))
+        while len(h)>0:
+            d,x,y,i = heapq.heappop(h)
+            if i!=-1 and dist[i]>d:
+                continue
+            best = min(best, abs(x-target[0])+abs(y-target[1])+d)
+
+            for index, (sx,sy,ex,ey,c) in enumerate(specialRoads):
+                cost = d + abs(x-sx) + abs(y-sy) + c
+                if cost < dist[index]:
+                    dist[index] = cost
+                    heapq.heappush(h, (cost, ex, ey, index))
+
+        return best

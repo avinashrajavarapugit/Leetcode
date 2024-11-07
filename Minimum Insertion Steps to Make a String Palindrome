@@ -1,0 +1,12 @@
+class Solution:
+    def minInsertions(self, s: str) -> int:
+        n=len(s)
+        @cache
+        def f(i,j):
+            if i==j:return 1
+            if i>j :return 0
+            if s[i]==s[j]:
+                return 2+f(i+1,j-1)
+            return max(f(i+1,j),f(i,j-1))
+        result = f(0,len(s)-1)
+        return n-result 

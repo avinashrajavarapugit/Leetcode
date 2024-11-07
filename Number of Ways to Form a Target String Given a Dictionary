@@ -1,0 +1,31 @@
+class Solution:
+    def numWays(self, words: List[str], target: str) -> int:
+        MOD = 1000000007
+        T = len(target)
+        W = len(words)
+        L = len(words[0])
+        f = [[0]*26 for _ in range(L+1)]
+        for word in words:
+            for index,c in enumerate(word):
+                x = ord(c)-ord('a')
+                f[index][x] += 1
+        
+        has_cache = [[False] * (L+1) for _ in range(T+1)]
+        cache = [[None]*(L+1) for _ in range(T+1)]
+        def count(t_index,w_index):
+            if t_index == T:
+                return 1
+            if w_index == L:
+                return 0
+            if has_cache[t_index][w_index]:
+                return cache[t_index][w_index]
+            
+            ways = 0
+            ways += count(t_index+1, w_index + 1) * f[w_index][ord(target[t_index])-ord('a')]
+            ways += count(t_index,w_index+1)
+
+            has_cache[t_index][w_index] = True
+            cache[t_index][w_index] = ways%MOD
+
+            return ways%MOD
+        return count(0,0)%MOD

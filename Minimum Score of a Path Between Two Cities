@@ -1,0 +1,19 @@
+class Solution:
+    def minScore(self, n: int, roads: List[List[int]]) -> int:
+
+        graph = defaultdict(dict)
+        for u,v,w in roads:
+            graph[u][v] = graph[v][u] = w
+        mini = float('inf')
+        visited = set()
+        visited.add(1)
+        queue = deque([1])
+
+        while(queue):
+            curr = queue.popleft()
+            for adj, score in graph[curr].items():
+                if adj not in visited:
+                    visited.add(adj)
+                    queue.append(adj)
+                mini = min(mini, score)
+        return mini

@@ -1,0 +1,23 @@
+class Solution:
+    def longestCycle(self, edges: List[int]) -> int:
+        n = len(edges)
+        visited = [False] * n
+        total = -1
+        def visit(x):
+            t = 0
+            s = {}
+            while not visited[x]:
+                visited[x] = True
+                s[x] = t
+                t += 1
+                if edges[x] != -1:
+                    x = edges[x]
+                    if x in s:
+                        nonlocal total
+                        total = max(total,t - s[x])
+                        return
+        for i in range(n):
+            if not visited[i] and edges[i] != -1:
+                visit(i)
+                    
+        return total       

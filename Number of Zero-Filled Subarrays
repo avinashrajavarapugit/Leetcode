@@ -1,0 +1,13 @@
+class Solution:
+    def zeroFilledSubarray(self, nums: List[int]) -> int:
+        tot = 0
+        streak = 0
+        for num in nums:
+            if num == 0:
+                streak+=1
+            elif streak != 0:
+                tot+=(streak*(streak+1)//2)
+                streak = 0
+        tot+=(streak*(streak+1)//2)
+        return tot
+Console
