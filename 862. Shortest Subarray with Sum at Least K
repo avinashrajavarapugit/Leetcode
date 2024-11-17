@@ -1,0 +1,19 @@
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        pref = [0] * (len(nums) + 1)
+        for i in range(len(nums)):
+            pref[i + 1] = pref[i] + nums[i]
+
+        res = float('inf')
+        dq = deque()
+        for i in range(len(nums) + 1):
+            while dq and pref[i] - pref[dq[0]] >= k:
+                res = min(res, i - dq.popleft())
+            
+            while dq and pref[i] <= pref[dq[-1]]:
+                dq.pop()
+            
+            dq.append(i)
+            
+        return res if res != float('inf') else -1
+            
