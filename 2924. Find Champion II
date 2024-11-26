@@ -1,0 +1,19 @@
+class Solution:
+    def findChampion(self, n: int, edges: List[List[int]]) -> int:
+        in_degree = [0] * n
+        
+        for u, v in edges:
+            in_degree[v] += 1
+        
+        ans = 0
+        cnt = 0
+        for i in range(n):
+            new = ans
+            if in_degree[i] == 0:
+                cnt += 1
+                new = i
+            if cnt > 1:
+                return -1
+            ans = new
+        
+        return ans
