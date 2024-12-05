@@ -1,0 +1,15 @@
+class Solution:
+    def canChange(self, start: str, target: str) -> bool:
+        if start.replace('_', '') != target.replace('_', ''):
+            return False
+        
+        start_positions = [(ch, i) for i, ch in enumerate(start) if ch != '_']
+        target_positions = [(ch, i) for i, ch in enumerate(target) if ch != '_']
+        
+        for (ch_s, pos_s), (ch_t, pos_t) in zip(start_positions, target_positions):
+            if ch_s == 'L' and pos_s < pos_t:
+                return False
+            if ch_s == 'R' and pos_s > pos_t:
+                return False
+        
+        return True
