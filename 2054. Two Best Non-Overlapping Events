@@ -1,0 +1,16 @@
+class Solution:
+    def maxTwoEvents(self, events: List[List[int]]) -> int:
+        events.sort()
+
+        heap = []
+        res = 0
+        maxv = 0
+
+        for u, v , w in events:
+            while heap and heap[0][0] < u:
+                maxv = max(maxv, heappop(heap)[1])
+            
+            res = max(res, w + maxv)
+            heappush(heap, (v, w))
+        
+        return res
