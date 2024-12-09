@@ -1,0 +1,25 @@
+class Solution:
+    def isArraySpecial(self, nums: List[int], queries: List[List[int]]) -> List[bool]:
+        n = len(nums)
+
+        b = [False] * n
+        b[0] = True
+        for i in range(1, n):
+            b[i] = False if (nums[i-1]+nums[i]) % 2 == 0 else True
+        
+        print(b)
+        cnt = [0] * n
+        cnt[0] = 1 if not b[0] else 0
+        for i in range(1, n):
+            if not b[i]:
+                cnt[i] += 1
+            cnt[i] += cnt[i - 1]
+        
+        print(cnt)
+        res = []
+        for u, v in queries:
+            ans = cnt[v] - (cnt[u] if u > 0 else 0)
+
+            res.append(ans == 0)
+        
+        return res
