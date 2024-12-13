@@ -1,0 +1,20 @@
+class Solution:
+    def findScore(self, nums: List[int]) -> int:
+        res = 0
+        #
+        pq = []
+        heapify(pq)
+        vis = [False] * len(nums)
+        for i, val in enumerate(nums):
+            heappush(pq, (val, i))
+        
+        while pq:
+            a, idx = heappop(pq)
+            if not vis[idx]:
+                vis[idx] = True
+                if idx > 0:
+                    vis[idx - 1] = True
+                if idx < len(nums) - 1:
+                    vis[idx + 1] = True
+                res += a
+        return res
