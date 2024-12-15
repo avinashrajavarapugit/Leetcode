@@ -1,0 +1,21 @@
+class Solution:
+    def maxAverageRatio(self, classes: List[List[int]], extraStudents: int) -> float:
+        pq = []
+        heapify(pq)
+
+        for p, t in classes:
+            g = (p+1)/(t+1) - (p/t)
+            heappush(pq, (-g, p, t))
+        
+        for i in range(extraStudents):
+            r, p, t = heappop(pq)
+            p += 1
+            t += 1
+            ng = (p+1)/(t+1) - (p/t)
+            heappush(pq, (-ng, p, t))
+        
+        res = 0
+        for r, p, t in pq:
+            res += (p/t)
+        
+        return res/len(pq)
