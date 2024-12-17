@@ -1,0 +1,25 @@
+class Solution:
+    def repeatLimitedString(self, s: str, repeatLimit: int) -> str:
+        pq = []
+        heapify(pq)
+        res = []
+
+        c = collections.Counter(s)
+        for u, v in c.items():
+            heappush(pq, (-ord(u), v))
+        
+        while pq:
+            o, v = heappop(pq)
+            ch = chr(-o)
+            use = min(v, repeatLimit)
+            res.append(ch * use)
+
+            if v > use and pq:
+                no, nv = heappop(pq)
+                res.append(chr(-no))
+                if nv > 1:
+                    heappush(pq, (no, nv - 1))
+                heappush(pq, (o, v - use))
+            
+        return ''.join(res)
+
