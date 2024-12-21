@@ -1,0 +1,27 @@
+class Solution:
+    def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
+        # 3 0 [1]
+        # 3 6 (2, 1)
+        # 
+        graph = collections.defaultdict(list)
+
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        def solve(u, parent):
+            ans, curr = 0, 0
+            for v in graph[u]:
+                if v != parent:
+                    ncurr, nans = solve(v, u)
+                    curr += ncurr
+                    ans += nans
+            curr += values[u]
+            if curr % k == 0:
+                ans += 1
+            
+            return curr, ans
+        
+        _, res = solve(0, -1)
+
+        return res
