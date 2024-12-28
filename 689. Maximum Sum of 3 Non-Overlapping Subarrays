@@ -1,0 +1,41 @@
+from typing import List
+
+class Solution:
+    def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+        n = len(nums)
+        subsums = [0] * (n - k + 1)
+        
+        # Calculate subsums[i]: sum of subarray of length k starting at index i
+        curr_sum = 0
+        for j in range(n):
+            curr_sum += nums[j]
+            if j >= k:
+                curr_sum -= nums[j - k]
+            if j >= k - 1:
+                subsums[j - k + 1] = curr_sum
+
+        ns = len(subsums)
+        pfx = [0] * ns
+        sfx = [0] * ns
+        
+        # Calculate prefix max indices
+        pfx[0] = 0
+        for i in range(1, ns):
+            pfx[i] = i if subsums[i] > subsums[pfx[i - 1]] else pfx[i - 1]
+        
+        # Calculate suffix max indices
+        sfx[ns - 1] = ns - 1
+        for i in range(ns - 2, -1, -1):
+            sfx[i] = i if subsums[i] >= subsums[sfx[i + 1]] else sfx[i + 1]
+
+        # Iterate over every possible middle index
+        ans = [0, k, 2 * k]
+        for i in range(k, ns - k):
+            left = pfx[i - k]
+            right = sfx[i + k]
+            current_sum = subsums[left] + subsums[i] + subsums[right]
+            best_sum = subsums[ans[0]] + subsums[ans[1]] + subsums[ans[2]]
+            if current_sum > best_sum:
+                ans = [left, i, right]
+
+        return ans
