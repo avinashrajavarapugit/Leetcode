@@ -1,0 +1,28 @@
+N = 9
+
+def is_possible(curr_row, curr_col, mat, val):
+    for i in range(N):
+        if mat[curr_row][i] == val or mat[i][curr_col] == val:
+            return False
+    
+    for i in range(N):
+        if mat[3 * (curr_row // 3) + i // 3][3 * (curr_col // 3) + (i % 3)] == val:
+            return False
+    
+    return True
+
+def solve(mat):
+    for i in range(N):
+        for j in range(N):
+            if mat[i][j] == 0:
+                for val in range(1, 10):
+                    if is_possible(i, j, mat, val):
+                        mat[i][j] = val
+                        if solve(mat):
+                            return True
+                        mat[i][j] = 0
+                return False
+    return True
+
+def solve_sudoku(mat):
+    solve(mat)
