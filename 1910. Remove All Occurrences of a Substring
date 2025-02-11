@@ -1,0 +1,12 @@
+class Solution:
+    def removeOccurrences(self, s: str, part: str) -> str:
+        n = len(s)
+        while len(s) > 0:
+            c = False
+            if part in s:
+                c = True
+            if c == False:
+                return s
+            s = s.replace(part, '', 1)
+            print(s)
+        return s
